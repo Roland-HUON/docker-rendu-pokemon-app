@@ -1,11 +1,20 @@
 services:
+  api:
+    image: node:22-alpine3.19
+    ports:
+      - 3000:3000
+    volumes:
+      - ./api:/app
+    networks:
+      - network_TAMR
+    command: "node /app/index.js"
   web:
     image: pokemon_app:1.0.0
     
     ports:
       - 80:80
     volumes:
-      - .:/app
+      - ./app:/app
     networks:
       - network_TAMR 
   db:
@@ -13,8 +22,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_USER='root'
-      - MYSQL_PASSWORD=''
+      - MYSQL_ALLOW_EMPTY_PASSWORD='yes'
       - MYSQL_DATABASE='pokemon'
     volumes:
       - db_data:/var/lib/mysql
