@@ -23,8 +23,10 @@ INSERT INTO users (username, email, password) VALUES
 
 -- Add pokemons to the database
 INSERT INTO pokemons (name, type, hp, damage) VALUES 
-('Pikachu', 'Electric', 35, 55),
-('Charmander', 'Fire', 39, 52),
-('Squirtle', 'Water', 44, 48),
-('Bulbasaur', 'Grass', 45, 49),
-('Jigglypuff', 'Normal', 115, 45);
+('Pikachu', 'Électrique', 35, 55),
+('Salamèche', 'Feu', 39, 52),
+('Reptincel', 'Feu', 64, 75),
+('Dracaufeu', 'Feu', 112, 90),
+('Carapuce', 'Eau', 44, 48),
+('Bulbizarre', 'Plante', 45, 49),
+('Nanméouie', 'Normal', 115, 45);

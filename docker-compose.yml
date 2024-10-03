@@ -7,16 +7,17 @@ services:
       - ./api:/app
     networks:
       - network_TAMR
-    command: "node /app/index.js"
+    command: ["node", "/app/index.js"]
+
   web:
     image: pokemon_app:1.0.0
-    
     ports:
       - 80:80
     volumes:
       - ./app:/app
     networks:
       - network_TAMR 
+    
   db:
     image: mysql:8.0.39
     ports:
@@ -29,6 +30,7 @@ services:
       - ./db-init:/docker-entrypoint-initdb.d
     networks:
       - network_TAMR
+
   proxy:
     image: nginx:1.27.2-alpine
     networks:
