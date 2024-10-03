@@ -1,0 +1,30 @@
+services:
+  web:
+    image: pokemon_app:1.0.0
+    ports:
+      - 80:80
+    volumes:
+      - .:/app
+    networks:
+      - network_TAMR 
+  db:
+    image: mysql:8.0.39
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER='root'
+      - MYSQL_PASSWORD=''
+      - MYSQL_DATABASE='pokemon'
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - network_TAMR
+  proxy:
+    image: nginx:1.27.2-alpine
+    networks:
+      - network_TAMR
+
+volumes:
+  db_data:
+networks:
+  network_TAMR:
