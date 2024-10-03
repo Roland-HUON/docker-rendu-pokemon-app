@@ -1,6 +1,7 @@
 services:
   web:
     image: pokemon_app:1.0.0
+    
     ports:
       - 80:80
     volumes:
