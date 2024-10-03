@@ -6,7 +6,8 @@
 - Docker-compose
 ### Lancement
 ```bash
-docker build -t pokemon_api .
+docker volume create db_data
+docker build -t pokemon_app .
 docker-compose up
 ```
 ### Utilisation
