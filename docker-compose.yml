@@ -8,7 +8,8 @@ services:
     networks:
       - network_TAMR
     command: ["node", "/app/index.js"]
-
+    depends_on:
+      - db
   web:
     image: pokemon_app:1.0.0
     ports:
@@ -35,7 +36,6 @@ services:
     image: nginx:1.27.2-alpine
     networks:
       - network_TAMR
-
 volumes:
   db_data:
 networks:

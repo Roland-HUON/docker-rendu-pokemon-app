@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS pokemons (
 
 -- Add admin user
 INSERT INTO users (username, email, password) VALUES 
-('admin', 'admin@example.com', 'admin');
+('admin', 'admin@pokemonapp.com', '12345678');
 
 -- Add pokemons to the database
 INSERT INTO pokemons (name, type, hp, damage) VALUES 

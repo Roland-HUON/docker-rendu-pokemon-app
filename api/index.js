@@ -1,48 +1,69 @@
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-const port = 3000;
+const waitPort = require('wait-port');
 
-const db = mysql.createConnection({
+const app = express();
+app.use(bodyParser.json());
+
+const dbConfig = {
   host: 'db',
   user: 'root',
   password: '',
-  database: 'pokemon',
-});
+  database: 'pokemon'
+};
 
-db.connect((err) => {
-  if (err) {
-    console.error('Erreur de connexion à la base de données :', err);
-    return;
+const waitForDatabase = async () => {
+  await waitPort({ host: dbConfig.host, port: 3306 });
+};
+
+const connectWithRetry = async () => {
+  try {
+    await waitForDatabase();
+    const connection = mysql.createConnection(dbConfig);
+    console.log('Successfully connected to the database');
+    return connection;
+  } catch (err) {
+    console.error('Error connecting to the database:', err);
+    console.log('Retrying in 5 seconds...');
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    return connectWithRetry();
   }
-  console.log('Connecté à la base de données MySQL');
-});
+};
 
-app.get('/api/users', (req, res) => {
-  db.query('SELECT * FROM users', (err, results) => {
+connectWithRetry()
+  .then(() => {
+    app.listen(3000, () => {
+      console.log('API running on port 3000');
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to the database:', err);
+    process.exit(1);
+  });
+
+app.get('/api/pokemons', (req, res) => {
+  const connection = mysql.createConnection(dbConfig);
+  connection.query('SELECT * FROM pokemon', (err, results) => {
     if (err) {
-      res.status(500).send(err);
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
     } else {
       res.json(results);
     }
+    connection.end();
   });
 });
 
-app.get('/api/pokemons', (req, res) => {
-    db.query('SELECT * FROM pokemons', (err, results) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.json(results);
-        }
-    });
-});
-
-app.listen(port, () => {
-  console.log(`API running on port ${port}`);
+app.get('/api/users', (req, res) => {
+  const connection = mysql.createConnection(dbConfig);
+  connection.query('SELECT * FROM users', (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.json(results);
+    }
+    connection.end();
+  });
 });
