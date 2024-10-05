@@ -7,8 +7,8 @@ app.use(bodyParser.json());
 const userRoutes = require('./routes/userRoutes');
 const pokemonRoutes = require('./routes/pokemonRoutes');
 
-app.use('/api', userRoutes);
-app.use('/api', pokemonRoutes);
+app.use('/users', userRoutes);
+app.use('/pokemons', pokemonRoutes);
 const port = 3000;
 
 app.listen(port, () => {

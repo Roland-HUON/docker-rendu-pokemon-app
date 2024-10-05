@@ -6,9 +6,7 @@
 - Docker-compose
 ### Lancement
 ```bash
-docker volume create db_data
-docker build -t pokemon_app .
-docker-compose up
+docker-compose up -d
 ```
 ### Utilisation
 Le serveur est accessible à l'adresse `http://localhost`
