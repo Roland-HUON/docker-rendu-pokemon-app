@@ -24,30 +24,6 @@ async function fetchPokemon() {
 // Appeler fetchPokemon lorsque le composant est monté
 onMounted(fetchPokemon);
 
-// Fonctions pour gérer les Pokémon de l'utilisateur
-async function addPokemonsToUser(pokemonId) {
-  try {
-    const response = await fetch(`http://localhost/api/users/pokemons`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Assurez-vous d'envoyer des données JSON
-        'auth-token': `${localStorage.getItem('userToken')}`
-      },
-      body: JSON.stringify({ id: pokemonId }) // Ajouter l'ID du Pokémon dans le corps de la requête
-    });
-
-    if (!response.ok) {
-      const errorDetails = await response.text(); // Récupérer le corps de la réponse pour plus d'infos
-      throw new Error(`Erreur lors de l'ajout du Pokémon à l'utilisateur : ${errorDetails}`);
-    }
-
-    const result = await response.json(); // Récupérer la réponse JSON
-    pokemons.value.push(result); // Ajouter le Pokémon à la liste locale si nécessaire
-  } catch (error) {
-    console.error('Erreur lors de l\'ajout du Pokémon :', error);
-  }
-}
-
 async function removePokemon() {
   try {
     const response = await fetch(`http://localhost/api/pokemons/${id}`, {
@@ -112,7 +88,6 @@ async function updatePokemons() {
     <h2>Dégâts : <input v-model="pokemon.damage" type="number" /></h2>
   </section>
   <section>
-    <button @click="addPokemonsToUser(pokemon.id)">Ajouter à mon pokédex</button>
     <button @click="removePokemon()">Supprimer le pokémon</button>
     <button @click="updatePokemons()">Modifier les données du pokémon</button>
   </section>

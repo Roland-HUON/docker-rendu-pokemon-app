@@ -32,6 +32,7 @@ onMounted(fetchPokemons);
         hp: pokemon.hp,
         damage: pokemon.damage
       }"/>
+      <router-link to="/pokemons/add" class="add">+</router-link>
   </section>
 </template>
 
@@ -45,5 +46,8 @@ onMounted(fetchPokemons);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.add{
+  font-size: 150px;
 }
 </style>

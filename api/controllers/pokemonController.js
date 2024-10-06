@@ -32,11 +32,18 @@ const getPokemonById = async (req, res) => {
 };
 
 const addPokemon = async (req, res) => {
-    const { name, type } = req.body;
+    const { name, types, hp, damage } = req.body;
+
+    if (!name || !types || !hp || !damage) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const typesString = Array.isArray(types) ? JSON.stringify(types) : types;
+
     try {
         await db.connect();
-        const results = await db.query('INSERT INTO pokemons (name, type) VALUES (?, ?)', [name, type]);
-        res.status(201).json({ id: results.insertId, name, type });
+        const results = await db.query('INSERT INTO pokemons (name, types, hp, damage) VALUES (?, ?, ?, ?)', [name, typesString, hp, damage]);
+        res.status(201).json({ id: results.insertId, name, types: typesString, hp, damage });
     } catch (err) {
         console.error('Error adding pokemon:', err);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -47,21 +54,19 @@ const addPokemon = async (req, res) => {
 
 const updatePokemon = async (req, res) => {
     const { id } = req.params;
-    const { name, types, hp, damage } = req.body; // Assurez-vous d'utiliser 'types'
-    
-    // Vérifiez si 'types' est un tableau et convertissez-le en chaîne si nécessaire
+    const { name, types, hp, damage } = req.body;
+
     const typesString = Array.isArray(types) ? types.join(',') : types;
 
     try {
         await db.connect();
         const results = await db.query('UPDATE pokemons SET name = ?, types = ?, hp = ?, damage = ? WHERE id = ?', [name, typesString,hp, damage, id]);
 
-        // Vérifiez si la mise à jour a affecté des lignes
         if (results.affectedRows === 0) {
             return res.status(404).json({ error: 'Pokémon non trouvé' });
         }
 
-        res.json({ message: 'Pokémon mis à jour avec succès' }); // Réponse d'une mise à jour réussie
+        res.json({ message: 'Pokémon mis à jour avec succès' });
     } catch (err) {
         console.error('Error updating pokemon:', err);
         res.status(500).json({ error: 'Internal Server Error' });
