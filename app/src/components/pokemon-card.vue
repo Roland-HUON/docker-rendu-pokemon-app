@@ -1,5 +1,8 @@
 <script setup>
 import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
   pokemon: {
@@ -16,10 +19,15 @@ const props = defineProps({
     }
   }
 });
+
+function goToSinglePokemon() {
+  console.log('goToSinglePokemon');
+  router.push({ name: 'singlePokemon', params: { id: props.pokemon.id } });
+}
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="goToSinglePokemon()">
     <div class="card-image">
       <img :src="`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${String(pokemon.id).padStart(3, '0')}.png`" :alt="pokemon.name">
     </div>

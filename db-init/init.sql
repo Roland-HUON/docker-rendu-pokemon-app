@@ -34,15 +34,15 @@ INSERT INTO users (username, email, password) VALUES
 
 -- Add pokemons to the database
 INSERT INTO pokemons (id, name, types, hp, damage) VALUES 
+(1, 'Bulbasaur', '["Grass", "Poison"]', 45, 49),
+(2, 'Ivysaur', '["Grass", "Poison"]', 60, 62),
+(3, 'Venusaur', '["Grass", "Poison"]', 80, 82),
 (4, 'Charmander', '["Fire"]', 39, 52),
 (5, 'Charmeleon', '["Fire"]', 64, 75),
 (6, 'Charizard', '["Fire", "Flying"]', 112, 90),
 (7, 'Squirtle', '["Water"]', 44, 48),
 (8, 'Wartortle', '["Water"]', 59, 63),
 (9, 'Blastoise', '["Water"]', 79, 83),
-(1, 'Bulbasaur', '["Grass", "Poison"]', 45, 49),
-(2, 'Ivysaur', '["Grass", "Poison"]', 60, 62),
-(3, 'Venusaur', '["Grass", "Poison"]', 80, 82),
 (10, 'Caterpie', '["Bug"]', 45, 30),
 (11, 'Metapod', '["Bug"]', 40, 20),
 (16, 'Pidgey', '["Normal", "Flying"]', 40, 45),
@@ -73,4 +73,3 @@ INSERT INTO pokemons (id, name, types, hp, damage) VALUES
 (44, 'Gloom', '["Grass", "Poison"]', 60, 65),
 (45, 'Vileplume', '["Grass", "Poison"]', 80, 85),
 (46, 'Paras', '["Bug", "Grass"]', 35, 70);
-

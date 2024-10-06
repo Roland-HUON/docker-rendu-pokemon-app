@@ -1,3 +1,21 @@
+<template>
+  bonjour
+  <section>
+    <img :src="`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${String(pokemon.id).padStart(3, '0')}.png`" :alt="pokemon.name">
+  </section>
+  <section>
+    <h1>Pokémon : {pokemon.name}</h1>
+    <h2>Types : <input v-model="pokemon.types" placeholder="Entrez les types, séparés par une virgule" /></h2>
+    <h2>Points de vie : <input v-model="pokemon.hp" type="number" /></h2>
+    <h2>Dégâts : <input v-model="pokemon.damage" type="number" /></h2>
+  </section>
+  <section>
+    <button @click="addPokemonsToUser()">Ajouter à mon pokédex</button>
+    <button @click="removePokemonsToUser()">Enlever de mon pokédex</button>
+    <button @click="updatePokemons()">Modifier les données du pokémon</button>
+  </section>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -6,6 +24,7 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const id = route.params.id;
 console.log(id);
+console.log("bonjour");
 
 // à partir de l'id récupéré, récupérer les informations du pokémon
 const pokemon = ref({});
@@ -93,23 +112,6 @@ async function updatePokemons() {
 
 router.push({ name: 'pokemonsList' });
 </script>
-
-<template>
-  <section>
-    <img :src="`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${String(pokemon.id).padStart(3, '0')}.png`" :alt="pokemon.name">
-  </section>
-  <section>
-    <h1>Pokémon : {pokemon.name}</h1>
-    <h2>Types : <input v-model="pokemon.types" placeholder="Entrez les types, séparés par une virgule" /></h2>
-    <h2>Points de vie : <input v-model="pokemon.hp" type="number" /></h2>
-    <h2>Dégâts : <input v-model="pokemon.damage" type="number" /></h2>
-  </section>
-  <section>
-    <button @click="addPokemonsToUser()">Ajouter à mon pokédex</button>
-    <button @click="removePokemonsToUser()">Enlever de mon pokédex</button>
-    <button @click="updatePokemons()">Modifier les données du pokémon</button>
-  </section>
-</template>
 
 <style scoped>
 </style>

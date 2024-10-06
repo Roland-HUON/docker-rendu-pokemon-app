@@ -10,7 +10,7 @@ const routes = [
     { path: '/login', component: login },
     { path: '/signup', component: signup },
     { path: '/', component: HelloWorld },
-    {path: '/pokemon/:id', component: singlePokemon, name: 'singlePokemon'},
+    {path: '/pokemons/:id', component: singlePokemon, name: 'singlePokemon'},
 ]
 
 const router = createRouter({  
