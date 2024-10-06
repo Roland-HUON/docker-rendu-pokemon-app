@@ -1,31 +1,49 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import pokemonCard from './components/pokemon-card.vue';
+import { ref, onMounted } from 'vue';
+
+const pokemons = ref([]);
+console.log(pokemons);
+
+async function fetchPokemons() {
+    try {
+        const response = await fetch('http://localhost/api/pokemons');
+        pokemons.value = await response.json();
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+    }
+}
+
+onMounted(fetchPokemons);
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <p>Test</p>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <section>
+    <h1>Pokédex</h1>
+  </section>
+  <section class="content-pokemon" data-context="base">
+    <pokemonCard 
+      v-for="pokemon in pokemons" 
+      :key="pokemon.id"
+      :pokemon="{
+        id: pokemon.id,
+        name: pokemon.name,
+        types: pokemon.types,
+        hp: pokemon.hp,
+        damage: pokemon.damage
+      }"/>
+  </section>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.content-pokemon {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-around;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.card{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

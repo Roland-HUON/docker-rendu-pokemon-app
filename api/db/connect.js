@@ -5,7 +5,8 @@ const dbConfig = {
     host: 'db',
     user: 'root',
     password: '',
-    database: 'pokemon'
+    database: 'pokemon',
+    charset: 'utf8mb4'
 };
 
 const waitForDatabase = async () => {
