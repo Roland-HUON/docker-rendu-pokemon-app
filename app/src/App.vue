@@ -17,6 +17,15 @@ import pokemonCard from './components/pokemon-card.vue';
 </template>
 
 <style scoped>
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem;
+  font-size: xx-large;
+}
+
 </style>
 
 <script>

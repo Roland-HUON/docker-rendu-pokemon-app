@@ -43,10 +43,73 @@ const props = defineProps({
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: space-around;
+  
 }
 .card{
-  display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 300px;
+  margin: 15px ;
 }
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-image img {
+  max-height: 175px;
+  transition: transform 0.3s;
+}
+
+.card:hover .card-image img {
+  transform: scale(1.1);
+}
+
+
+.card-text h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.pokemon-information {
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.type {
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.type p {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.attribut {
+  font-size: 14px;
+}
+
+.attribut p {
+  margin: 5px 0;
+  color: #495057;
+  font-weight: 500;
+}
+
+
+
 </style>
