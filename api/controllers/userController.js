@@ -1,38 +1,33 @@
+const bcrypt = require('bcrypt');
 const db = require('../db/connect');
-
-// const getUsers = async (req, res) => {
-//     try {
-//         await db.connect();
-//         const results = await db.query('SELECT * FROM users');
-//         res.json(results);
-//     } catch (err) {
-//         console.error('Error fetching users:', err);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     } finally {
-//         await db.end();
-//     }
-// };
 
 const getUserByEmailAndPassword = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
-        return res.status(400).json({ error: 'Missing required fields', test: req.body });
+        return res.status(400).json({ error: 'Missing required fields' });
     }
     try {
         await db.connect();
-        const results = await db.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password]);
+        const results = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         if (results.length === 0) {
-            res.status(404).json({ error: 'User not found' });
-        } else {
-            res.json(results[0]);
+            return res.status(404).json({ error: 'User not found' });
         }
+        
+        const user = results[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        res.json({ success: true, user });
     } catch (err) {
         console.error('Error fetching user:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
         await db.end();
     }
-}
+};
 
 const createUser = async (req, res) => {
     const { username, email, password } = req.body;
@@ -41,7 +36,10 @@ const createUser = async (req, res) => {
     }
     try {
         await db.connect();
-        const results = await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, password]);
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const results = await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
+        
         res.status(201).json({ id: results.insertId, username, email });
     } catch (err) {
         console.error('Error creating user:', err);
@@ -52,7 +50,6 @@ const createUser = async (req, res) => {
 };
 
 module.exports = {
-    // getUsers,
     getUserByEmailAndPassword,
     createUser
 };
