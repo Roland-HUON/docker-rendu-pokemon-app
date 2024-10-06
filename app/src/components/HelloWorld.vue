@@ -1,43 +1,49 @@
 <script setup>
-import { ref } from 'vue'
+import pokemonCard from './pokemon-card.vue';
+import { ref, onMounted } from 'vue';
 
-defineProps({
-  msg: String,
-})
+const pokemons = ref([]);
+console.log(pokemons);
 
-const count = ref(0)
+async function fetchPokemons() {
+    try {
+        const response = await fetch('http://localhost/api/pokemons');
+        pokemons.value = await response.json();
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+    }
+}
+
+onMounted(fetchPokemons);
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
-  </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Learn more about IDE Support for Vue in the
-    <a
-      href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support"
-      target="_blank"
-      >Vue Docs Scaling up Guide</a
-    >.
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+  <section>
+    <h1>Pokédex</h1>
+  </section>
+  <section class="content-pokemon" data-context="base">
+    <pokemonCard 
+      v-for="pokemon in pokemons" 
+      :key="pokemon.id"
+      :pokemon="{
+        id: pokemon.id,
+        name: pokemon.name,
+        types: pokemon.types,
+        hp: pokemon.hp,
+        damage: pokemon.damage
+      }"/>
+  </section>
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+.content-pokemon {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-around;
+}
+.card{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

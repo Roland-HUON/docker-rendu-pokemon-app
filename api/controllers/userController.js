@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const db = require('../db/connect');
 
 const getUserByEmailAndPassword = async (req, res) => {
@@ -8,18 +7,12 @@ const getUserByEmailAndPassword = async (req, res) => {
     }
     try {
         await db.connect();
-        const results = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        const results = await db.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password]);
         if (results.length === 0) {
             return res.status(404).json({ error: 'User not found' });
         }
-        
-        const user = results[0];
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
 
+        const user = results[0];
         res.json({ success: true, user });
     } catch (err) {
         console.error('Error fetching user:', err);
@@ -37,8 +30,7 @@ const createUser = async (req, res) => {
     try {
         await db.connect();
         
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const results = await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
+        const results = await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, password]);
         
         res.status(201).json({ id: results.insertId, username, email });
     } catch (err) {

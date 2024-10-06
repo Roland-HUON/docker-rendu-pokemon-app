@@ -17,7 +17,7 @@ services:
         max-file: "3"
 
   web:
-    # Build de l'image Dokcer personnalisée depuis le Dockerfile du dossier app
+    # Build de l'image Docker personnalisée depuis le Dockerfile du dossier app
     build:
       context: ./app
       dockerfile: dockerfile

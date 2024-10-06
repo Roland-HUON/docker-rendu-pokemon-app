@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 const pokemonController = require('../controllers/pokemonController');
 
 // router.get('/users', userController.getUsers);
-router.get('/login', userController.getUserByEmailAndPassword);
+router.post('/login', userController.getUserByEmailAndPassword);
 router.post('/signup', userController.createUser);
 router.post('/', userController.createUser);
 router.post('/:userId/pokemons', pokemonController.addPokemonUserLink);

@@ -1,20 +1,5 @@
 <script setup>
 import { defineProps } from 'vue';
-import { ref, onMounted } from 'vue';
-
-const pokemons = ref([]);
-console.log(pokemons);
-
-async function fetchPokemons() {
-    try {
-        const response = await fetch('http://localhost/api/pokemons');
-        pokemons.value = await response.json();
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
-    }
-}
-
-onMounted(fetchPokemons);
 
 const props = defineProps({
   pokemon: {
@@ -34,21 +19,6 @@ const props = defineProps({
 </script>
 
 <template>
-  <section>
-    <h1>Pokédex</h1>
-  </section>
-  <section class="content-pokemon" data-context="base">
-    <pokemonCard 
-      v-for="pokemon in pokemons" 
-      :key="pokemon.id"
-      :pokemon="{
-        id: pokemon.id,
-        name: pokemon.name,
-        types: pokemon.types,
-        hp: pokemon.hp,
-        damage: pokemon.damage
-      }"/>
-  </section>
   <div class="card">
     <div class="card-image">
       <img :src="`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${String(pokemon.id).padStart(3, '0')}.png`" :alt="pokemon.name">
