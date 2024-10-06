@@ -76,7 +76,11 @@ const deletePokemon = async (req, res) => {
 
 const addPokemonUserLink = async (req, res) => {
     const { pokemonId } = req.body;
-    const { userId } = req.params;
+    const user = req.user;
+    const userId = user.id;
+    if (!pokemonId || !userId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
     try {
         await db.connect();
         const results = await db.query('INSERT INTO pokemon_user (pokemon_id, user_id) VALUES (?, ?)', [pokemonId, userId]);
@@ -90,7 +94,11 @@ const addPokemonUserLink = async (req, res) => {
 };
 
 const getPokemonsByUserId = async (req, res) => {
-    const { userId } = req.params;
+    const user = req.user;
+    const userId = user.id;
+    if (!userId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
     try {
         await db.connect();
         const results = await db.query('SELECT * FROM pokemons WHERE id IN (SELECT pokemon_id FROM pokemon_user WHERE user_id = ?)', [userId]);
@@ -104,7 +112,12 @@ const getPokemonsByUserId = async (req, res) => {
 };
 
 const deletePokemonUserLink = async (req, res) => {
-    const { pokemonId, userId } = req.params;
+    const user = req.user;
+    const userId = user.id;
+    const { pokemonId } = req.params;
+    if (!userId || !pokemonId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
     try {
         await db.connect();
         const results = await db.query('DELETE FROM pokemon_user WHERE pokemon_id = ? AND user_id = ?', [pokemonId, userId]);

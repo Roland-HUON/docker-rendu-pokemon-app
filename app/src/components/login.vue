@@ -41,6 +41,8 @@ export default {
                 });
                 
                 if (response.data.success) {
+                    const token = response.headers['auth-token'];
+                    localStorage.setItem('userToken', token);
                     this.$router.push('/dashboard');
                 } else {
                     alert('Login failed: ' + (response.data.error || 'Unknown error'));

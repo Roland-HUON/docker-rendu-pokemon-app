@@ -1,4 +1,7 @@
 const db = require('../db/connect');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config({ path: 'app/.env' });
 
 const getUserByEmailAndPassword = async (req, res) => {
     const { email, password } = req.body;
@@ -13,10 +16,13 @@ const getUserByEmailAndPassword = async (req, res) => {
         }
 
         const user = results[0];
-        res.json({ success: true, user });
+        const token = jwt.sign({ id: user.id, username: user.username }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+
+        res.header('auth-token', token);
+        return res.json({ success: true, user });
     } catch (err) {
         console.error('Error fetching user:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' });
     } finally {
         await db.end();
     }
@@ -32,10 +38,10 @@ const createUser = async (req, res) => {
         
         const results = await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, password]);
         
-        res.status(201).json({ id: results.insertId, username, email });
+        return res.status(201).json({ id: results.insertId, username, email });
     } catch (err) {
         console.error('Error creating user:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' });
     } finally {
         await db.end();
     }
