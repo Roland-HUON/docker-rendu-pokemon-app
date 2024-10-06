@@ -3,14 +3,23 @@
 ## Installation
 ### Prérequis
 - Docker
-- Docker-compose
+- Docker Compose
+### Clonage du projet
+```bash
+git clone https://github.com/Roland-HUON/docker-rendu-pokemon-app.git
+```
+### Configuration
+Créer un fichier `.env` à la racine du projet avec les variables suivantes :
+```env
+MYSQL_ROOT_PASSWORD=LeMotDePasseDeVotreChoix
+```
 ### Lancement
 ```bash
 docker-compose up -d
 ```
 ### Utilisation
 Le serveur est accessible à l'adresse `http://localhost`
-L'API est accessible à l'adresse `http://localhost:3000`
+L'API est accessible à l'adresse `http://localhost/api`
 
 ### API
 #### `GET /api/pokemons` : Récupérer tous les pokémons

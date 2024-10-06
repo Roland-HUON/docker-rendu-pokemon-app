@@ -18,10 +18,10 @@ services:
         max-file: "3"
 
   web:
+    # Build de l'image Dokcer personnalisée depuis le Dockerfile du dossier app
     build:
       context: ./app
       dockerfile: dockerfile
-    image: pokemon_app:1.0.0
     ports:
       - 8080:80
     volumes:
@@ -35,7 +35,7 @@ services:
       - 3306:3306
     environment:
       - MYSQL_DATABASE=pokemon
-      - MYSQL_ALLOW_EMPTY_PASSWORD='yes'
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
       - ./db-init:/docker-entrypoint-initdb.d
