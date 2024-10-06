@@ -47,18 +47,29 @@ const addPokemon = async (req, res) => {
 
 const updatePokemon = async (req, res) => {
     const { id } = req.params;
-    const { name, type } = req.body;
+    const { name, types, hp, damage } = req.body; // Assurez-vous d'utiliser 'types'
+    
+    // Vérifiez si 'types' est un tableau et convertissez-le en chaîne si nécessaire
+    const typesString = Array.isArray(types) ? types.join(',') : types;
+
     try {
         await db.connect();
-        const results = await db.query('UPDATE pokemons SET name = ?, type = ? WHERE id = ?', [name, type, id]);
-        res.json(results);
+        const results = await db.query('UPDATE pokemons SET name = ?, types = ?, hp = ?, damage = ? WHERE id = ?', [name, typesString,hp, damage, id]);
+
+        // Vérifiez si la mise à jour a affecté des lignes
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'Pokémon non trouvé' });
+        }
+
+        res.json({ message: 'Pokémon mis à jour avec succès' }); // Réponse d'une mise à jour réussie
     } catch (err) {
         console.error('Error updating pokemon:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
         await db.end();
     }
-}
+};
+
 
 const deletePokemon = async (req, res) => {
     const { id } = req.params;
