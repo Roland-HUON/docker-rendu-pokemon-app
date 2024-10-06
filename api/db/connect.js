@@ -1,11 +1,14 @@
 const mysql = require('mysql2');
 const waitPort = require('wait-port');
+const dotenv = require('dotenv');
+dotenv.config({ path : 'app/.env'});
 
 const dbConfig = {
     host: 'db',
     user: 'root',
-    password: '',
-    database: 'pokemon'
+    password: process.env.MYSQL_ROOT_PASSWORD,
+    database: 'pokemon',
+    charset: 'utf8mb4'
 };
 
 const waitForDatabase = async () => {

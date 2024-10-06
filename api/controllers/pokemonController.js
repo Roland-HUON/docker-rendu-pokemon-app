@@ -31,6 +31,49 @@ const getPokemonById = async (req, res) => {
     }
 };
 
+const addPokemon = async (req, res) => {
+    const { name, type } = req.body;
+    try {
+        await db.connect();
+        const results = await db.query('INSERT INTO pokemons (name, type) VALUES (?, ?)', [name, type]);
+        res.status(201).json({ id: results.insertId, name, type });
+    } catch (err) {
+        console.error('Error adding pokemon:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.end();
+    }
+};
+
+const updatePokemon = async (req, res) => {
+    const { id } = req.params;
+    const { name, type } = req.body;
+    try {
+        await db.connect();
+        const results = await db.query('UPDATE pokemons SET name = ?, type = ? WHERE id = ?', [name, type, id]);
+        res.json(results);
+    } catch (err) {
+        console.error('Error updating pokemon:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.end();
+    }
+}
+
+const deletePokemon = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.connect();
+        const results = await db.query('DELETE FROM pokemons WHERE id = ?', [id]);
+        res.json(results);
+    } catch (err) {
+        console.error('Error deleting pokemon:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        await db.end();
+    }
+}
+
 const addPokemonUserLink = async (req, res) => {
     const { pokemonId } = req.body;
     const { userId } = req.params;
@@ -76,7 +119,10 @@ const deletePokemonUserLink = async (req, res) => {
 
 module.exports = {
     getPokemons,
+    addPokemon,
     getPokemonById,
+    updatePokemon,
+    deletePokemon,
     addPokemonUserLink,
     getPokemonsByUserId,
     deletePokemonUserLink,
