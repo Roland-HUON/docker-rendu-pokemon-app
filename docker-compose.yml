@@ -6,7 +6,6 @@ services:
     volumes:
       - ./api:/app:ro
     networks:
-      - network_frontend
       - network_backend
     command: ["node", "/app/index.js"]
     depends_on:
@@ -28,6 +27,11 @@ services:
       - ./app:/app:ro
     networks:
       - network_frontend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   db:
     image: mysql:8.0.39
@@ -38,10 +42,15 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
-      - ./db-init:/docker-entrypoint-initdb.d
+      - ./db-init:/docker-entrypoint-initdb.d:ro
     networks:
       - network_backend
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   proxy:
     image: nginx:1.27.2-alpine
@@ -56,6 +65,11 @@ services:
     depends_on:
       - api
       - web
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   db_data:
