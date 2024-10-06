@@ -2,7 +2,8 @@
 import HelloWorld from './components/HelloWorld.vue'
 import login from './components/login.vue'
 import signup from './components/signup.vue'
-import pokemonCard from './components/pokemon-card.vue';
+import pokemonCard from './components/pokemon-card.vue'
+import singlePokemon from './components/singlePokemon.vue'
 </script>
 
 <template>
@@ -11,7 +12,7 @@ import pokemonCard from './components/pokemon-card.vue';
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
       <router-link to="/signup">Signup</router-link>
-      <router-link to="/pokemons">Mon pokédex</router-link>
+      <router-link to="/pokemons">My pokedex</router-link>
     </nav>
     <router-view /> 
   </div>

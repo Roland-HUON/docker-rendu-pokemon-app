@@ -30,8 +30,8 @@ const props = defineProps({
           <p v-for="(type, index) in pokemon.types" :key="index">{{ type }}</p>
         </div>
         <div class="attribut">
-          <p>Points de vie : {{ pokemon.hp }}</p>
-          <p>Dégâts : {{ pokemon.damage }}</p>
+          <p>PV : {{ pokemon.hp }}</p>
+          <p>Dmg : {{ pokemon.damage }}</p>
         </div>
       </div>
     </div>

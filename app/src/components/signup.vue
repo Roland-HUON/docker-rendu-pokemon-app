@@ -1,9 +1,9 @@
 <template>
     <div class="signup max-w-md mx-auto p-6 border border-gray-300 rounded-lg">
-        <h2 class="text-2xl font-bold mb-6">Créer un compte</h2>
+        <h2 class="text-2xl font-bold mb-6">Create an account</h2>
         <form @submit.prevent="submitForm">
             <div class="form-group mb-4">
-                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Nom d'utilisateur</label>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                 <input 
                     type="text" 
                     id="username" 
@@ -23,7 +23,7 @@
                 />
             </div>
             <div class="form-group mb-6">
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                 <input 
                     type="password" 
                     id="password" 
@@ -36,12 +36,12 @@
                 type="submit" 
                 class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-                S'inscrire
+                Login
             </button>
         </form>
         <p class="mt-4 text-center">
-            Vous avez déjà un compte ? 
-            <router-link to="/login" class="text-blue-600 hover:underline">Connectez-vous</router-link>
+            You already have an account ?
+            <router-link to="/login" class="text-blue-600 hover:underline">Login</router-link>
         </p>
     </div>
 </template>

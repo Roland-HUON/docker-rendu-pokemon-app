@@ -1,7 +1,7 @@
 <!-- Vue for user's pokemons list -->
 <template>
   <section>
-    <h1>Mon pokédex</h1>
+    <h1>My pokedex</h1>
   </section>
   <section class="content-pokemon" data-context="base">
     <pokemonCard 
