@@ -35,7 +35,7 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await this.$http.post('/api/users/login', {
+                const response = await this.$http.post('http://localhost/api/users/login', {
                     email: this.email,
                     password: this.password
                 });

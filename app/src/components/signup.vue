@@ -61,7 +61,7 @@ export default {
         async submitForm() {
             try {
                 // Requête pour créer un utilisateur
-                const response = await this.$http.post('/api/users/signup', {
+                const response = await this.$http.post('http://localhost/api/users/signup', {
                     username: this.form.username,
                     email: this.form.email,
                     password: this.form.password

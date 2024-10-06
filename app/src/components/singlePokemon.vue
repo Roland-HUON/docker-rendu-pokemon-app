@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute(); // Récupérer les paramètres de l'URL
+const router = useRouter();
 const id = route.params.id; // Récupérer l'ID
 const pokemon = ref({}); // Créer une référence réactive pour le Pokémon
 
@@ -36,7 +37,8 @@ async function addPokemonsToUser(pokemonId) {
     });
 
     if (!response.ok) {
-      throw new Error('Erreur lors de l\'ajout du Pokémon à l\'utilisateur');
+      const errorDetails = await response.text(); // Récupérer le corps de la réponse pour plus d'infos
+      throw new Error(`Erreur lors de l'ajout du Pokémon à l'utilisateur : ${errorDetails}`);
     }
 
     const result = await response.json(); // Récupérer la réponse JSON
@@ -46,19 +48,27 @@ async function addPokemonsToUser(pokemonId) {
   }
 }
 
-async function removePokemonsToUser() {
+async function removePokemon() {
   try {
-    const response = await fetch(`http://localhost/api/users/pokemons`, {
+    const response = await fetch(`http://localhost/api/pokemons/${id}`, {
       method: 'DELETE',
       headers: {
-        'auth-token': `${localStorage.getItem('userToken')}`
-      }
+        'Content-Type': 'application/json',
+      },
     });
-    pokemons.value = await response.json();
+
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      throw new Error(`Erreur lors de l'enlèvement du pokémon : ${errorDetails}`);
+    }
+    // go to home page
+    router.push('/');
+
   } catch (error) {
-    console.error('Erreur lors de la récupération des données :', error);
+    console.error('Erreur:', error);
   }
 }
+
 
 async function updatePokemons() {
   try {
@@ -103,7 +113,7 @@ async function updatePokemons() {
   </section>
   <section>
     <button @click="addPokemonsToUser(pokemon.id)">Ajouter à mon pokédex</button>
-    <button @click="removePokemonsToUser()">Enlever de mon pokédex</button>
+    <button @click="removePokemon()">Supprimer le pokémon</button>
     <button @click="updatePokemons()">Modifier les données du pokémon</button>
   </section>
 </template>
